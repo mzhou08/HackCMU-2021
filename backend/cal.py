@@ -46,21 +46,25 @@ class AllocCal():
 
         self.userID = self.cur.fetchone()[0]
 
-        # Read the ICS file
-        with open (self.calName,'rb') as g:
-            self.gcal = Calendar.from_ical(g.read())
-            for component in self.gcal.walk():
-                if component.name == "VEVENT":
-                    title = component.get('summary')
-                    start = component.get('dtstart').dt
-                    end = component.get('dtend').dt
-                    
-                    # Get current timestamp
-                    #component.get('dtstamp').dt
-                    
-                    self.conn.execute("INSERT INTO Calendars (user_id, title,start,end) VALUES (?,?,?,?)", (self.userID, title, start, end))                    
+
+        # If the user wants to import a calendar
+        if self.calName != "":
+        
+            # Read the ICS file
+            with open (self.calName,'rb') as g:
+                self.gcal = Calendar.from_ical(g.read())
+                for component in self.gcal.walk():
+                    if component.name == "VEVENT":
+                        title = component.get('summary')
+                        start = component.get('dtstart').dt
+                        end = component.get('dtend').dt
+                        
+                        # Get current timestamp
+                        #component.get('dtstamp').dt
+                        
+                        self.conn.execute("INSERT INTO Calendars (user_id, title,start,end) VALUES (?,?,?,?)", (self.userID, title, start, end))                    
 
 
-        self.conn.commit()
+            self.conn.commit()
 
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
