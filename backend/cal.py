@@ -5,10 +5,16 @@ from icalendar import vDatetime
 
 import os
 import sqlite3
-from datetime import datetime
+import datetime
+import pytz
 
 class AllocCal():
     def __init__(self, calName, user):
+
+        '''FIX THIS LATER'''
+        self.utc = pytz.UTC
+
+
         self.calName = calName
         self.user = user
         self.events = []
@@ -59,7 +65,7 @@ class AllocCal():
 
         self.events = sorted(self.events, key = lambda x: x[2])
 
-        print(self.events)
+        # print(self.events)
 
 
     def writeToDB(self):
@@ -89,7 +95,7 @@ class AllocCal():
         relevant = []
         oneHour = datetime.timedelta(hours = 1)
         for e in self.events:
-            if e[3] < datetime.now():
+            if e[3].replace(tzinfo = self.utc) < datetime.datetime.now().replace(tzinfo = self.utc):
                 relevant.append(e)
 
         for i in range(len(relevant) - 1):
@@ -98,7 +104,8 @@ class AllocCal():
             while blockEnd < relevant[i+1][2]:
                 blocks.append([blockStart, blockEnd])
                 blockStart = blockEnd
-                blockEnd = blockStart + 1
+                blockEnd = blockStart + oneHour
         return blocks
 
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
+print(newCal.getFreeBlocks())
