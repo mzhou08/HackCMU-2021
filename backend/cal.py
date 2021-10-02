@@ -30,7 +30,7 @@ class AllocCal():
         self.conn.commit()
 
 
-    def writeToDatabase(self):
+    def writeToDB(self):
 
         # Get the filename of the calendar
 
