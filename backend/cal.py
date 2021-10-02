@@ -29,6 +29,17 @@ class AllocCal():
 
         self.conn.commit()
 
+        self.cur.execute("SELECT name FROM Users WHERE name = ?", (self.user,))
+
+        if (self.cur.fetchone() == None):
+            self.cur.execute("INSERT INTO Users (name) VALUES (?)", (self.user,))
+
+            self.conn.commit()
+
+        self.cur.execute("SELECT id FROM Users WHERE name = ?", (self.user,))
+
+        self.userID = self.cur.fetchone()[0]
+
         # Read the ICS file
         with open (self.calName,'rb') as g:
             self.gcal = Calendar.from_ical(g.read())
@@ -48,23 +59,6 @@ class AllocCal():
 
 
     def writeToDB(self):
-
-        # Get the filename of the calendar
-
-        # self.calName = input("Put the name of your calendar file here:\n")
-        # self.user = input("Your name here:\n")        
-        self.cur.execute("SELECT name FROM Users WHERE name = ?", (self.user,))
-
-        if (self.cur.fetchone() == None):
-            self.cur.execute("INSERT INTO Users (name) VALUES (?)", (self.user,))
-
-            self.conn.commit()
-
-        self.cur.execute("SELECT id FROM Users WHERE name = ?", (self.user,))
-
-        self.userID = self.cur.fetchone()[0]
-
-
         # If the user wants to import a calendar
         if self.calName != "":
         
