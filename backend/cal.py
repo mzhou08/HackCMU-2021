@@ -41,23 +41,23 @@ class AllocCal():
         self.userID = self.cur.fetchone()[0]
 
         # Read the ICS file
-        with open (self.calName,'rb') as g:
-            self.gcal = Calendar.from_ical(g.read())
-            for component in self.gcal.walk():
-                if component.name == "VEVENT":
-                    title = component.get('summary')
-                    start = component.get('dtstart').dt
-                    end = component.get('dtend').dt
+        if self.calName != "":
+            with open (self.calName,'rb') as g:
+                self.gcal = Calendar.from_ical(g.read())
+                for component in self.gcal.walk():
+                    if component.name == "VEVENT":
+                        title = component.get('summary')
+                        start = component.get('dtstart').dt
+                        end = component.get('dtend').dt
                     
-                    # Get current timestamp
-                    #component.get('dtstamp').dt
+                        # Get current timestamp
+                        #component.get('dtstamp').dt
 
-                    self.events.append([self.userID, title, start, end])
+                        self.events.append([self.userID, title, start, end])
 
-        self.conn.commit()
+            self.conn.commit()
 
         self.events = sorted(self.events, key = lambda x: x[2])
-
 
         print(self.events)
 
@@ -73,6 +73,15 @@ class AllocCal():
 
 
     # def writeToICal(self):
-    #     self.
+    #     self
+
+    def getEvents(self):
+        return self.events
+.
+    def sortEvents(self):
+        self.events = sorted(self.events, key = lambda x: x[2])
+
+    def addEvent(self, e)
+        self.events.append(e)
 
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
