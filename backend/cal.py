@@ -77,11 +77,11 @@ class AllocCal():
 
     def getEvents(self):
         return self.events
-.
+
     def sortEvents(self):
         self.events = sorted(self.events, key = lambda x: x[2])
 
-    def addEvent(self, e)
+    def addEvent(self, e):
         self.events.append(e)
 
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
