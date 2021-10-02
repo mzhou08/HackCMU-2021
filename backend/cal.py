@@ -55,6 +55,10 @@ class AllocCal():
                     self.events.append([self.userID, title, start, end])
 
         self.conn.commit()
+
+        self.events = sorted(self.events, key = lambda x: x[2])
+
+
         print(self.events)
 
 
