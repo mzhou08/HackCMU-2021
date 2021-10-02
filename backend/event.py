@@ -3,6 +3,6 @@ class Event():
         self.name = name
         self.dateAndTime = dateAndTime
 
-    def changeDateTime(newDateAndTime):
+    def changeDateTime(self,newDateAndTime):
         self.dateAndTime = newDateAndTime
     
