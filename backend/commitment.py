@@ -9,5 +9,5 @@ class Commitment():
         return self.name
     def setTime(self, newTime):
         self.time = newTime
-    def getDeadline():
+    def getDeadline(self):
         return self.deadline
