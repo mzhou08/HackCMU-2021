@@ -84,4 +84,21 @@ class AllocCal():
     def addEvent(self, e):
         self.events.append(e)
 
+    def getFreeBlocks(self):
+        blocks = []
+        relevant = []
+        oneHour = datetime.timedelta(hours = 1)
+        for e in self.events:
+            if e[3] < datetime.now():
+                relevant.append(e)
+
+        for i in range(len(relevant) - 1):
+            blockStart = relevant[i][3]
+            blockEnd = blockStart + oneHour
+            while blockEnd < relevant[i+1][2]:
+                blocks.append([blockStart, blockEnd])
+                blockStart = blockEnd
+                blockEnd = blockStart + 1
+        return blocks
+
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
