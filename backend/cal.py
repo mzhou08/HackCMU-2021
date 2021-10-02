@@ -9,15 +9,9 @@ from datetime import datetime
 
 class AllocCal():
     def __init__(self, calName, user):
-
-        # Get the filename of the calendar
-
-        # self.calName = input("Put the name of your calendar file here:\n")
-        # self.user = input("Your name here:\n")
-
         self.calName = calName
         self.user = user
-        
+        self.events = []
         # Initialize the Database
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.conn = sqlite3.connect(self.path+'/calendar.db')
@@ -34,7 +28,14 @@ class AllocCal():
         (id INTEGER PRIMARY KEY, name TEXT UNIQUE)''')
 
         self.conn.commit()
-        
+
+
+    def writeToDatabase(self):
+
+        # Get the filename of the calendar
+
+        # self.calName = input("Put the name of your calendar file here:\n")
+        # self.user = input("Your name here:\n")        
         self.cur.execute("SELECT name FROM Users WHERE name = ?", (self.user,))
 
         if (self.cur.fetchone() == None):
@@ -62,9 +63,15 @@ class AllocCal():
                         # Get current timestamp
                         #component.get('dtstamp').dt
                         
-                        self.conn.execute("INSERT INTO Calendars (user_id, title,start,end) VALUES (?,?,?,?)", (self.userID, title, start, end))                    
+                        #self.conn.execute("INSERT INTO Calendars (user_id, title,start,end) VALUES (?,?,?,?)", (self.userID, title, start, end))                    
 
+                        self.events.append([self.userID, title, start, end])
 
             self.conn.commit()
+            print(self.events)
+
+
+    #def writeToICal(self):
+        
 
 newCal = AllocCal("mhzhou@andrew.cmu.edu.ics", "michael")
